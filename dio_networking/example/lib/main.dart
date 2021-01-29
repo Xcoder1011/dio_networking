@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:dio_networking/dio_networking.dart';
 import 'package:example/controller/news_detail.dart';
 import 'package:example/model/news_response.dart';
 import 'package:example/view/news_cell.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 void main() {
@@ -38,19 +40,36 @@ class _MyHomePageState extends State<MyHomePage> {
   int _pageIndex = 1;
 
   void _requestData({int pageIndex = 1, VoidCallback complete}) async {
-    Networking.instance.get("https://v1.alapi.cn/api/new/toutiao", null,
-        (result) {
-      final dataMap = result.responseData;
-      if (null != dataMap && dataMap is Map<String, dynamic>) {
-        NewsResponse response = NewsResponse().fromJson(dataMap);
-        if (response?.data != null) {
-          _dataArray.addAll(response.data);
-        }
-      }
-      if (null != complete) {
-        complete();
+    rootBundle.loadString('lib/model/local_json_1.json').then((value) {
+      if (mounted) {
+        setState(() {
+          final dataMap = json.decode(value);
+          if (null != dataMap && dataMap is Map<String, dynamic>) {
+            NewsResponse response = NewsResponse().fromJson(dataMap);
+            if (response?.data != null) {
+              _dataArray.addAll(response.data);
+            }
+          }
+          if (null != complete) {
+            complete();
+          }
+        });
       }
     });
+
+    // Networking.instance.get("https://v1.alapi.cn/api/new/toutiao", null,
+    //     (result) {
+    //   final dataMap = result.responseData;
+    //   if (null != dataMap && dataMap is Map<String, dynamic>) {
+    //     NewsResponse response = NewsResponse().fromJson(dataMap);
+    //     if (response?.data != null) {
+    //       _dataArray.addAll(response.data);
+    //     }
+    //   }
+    //   if (null != complete) {
+    //     complete();
+    //   }
+    // });
   }
 
   void _onRefresh() async {
