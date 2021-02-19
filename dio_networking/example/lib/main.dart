@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _pageIndex = 1;
 
   void _requestData({int pageIndex = 1, VoidCallback complete}) async {
+
     rootBundle.loadString('lib/model/local_json_1.json').then((value) {
       if (mounted) {
         setState(() {
@@ -57,15 +58,25 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
 
-    // Networking.instance.get("https://v1.alapi.cn/api/new/toutiao", null,
+    // Networking.instance.get<NewsResponse>("https://v1.alapi.cn/api/new/toutiao", null,
     //     (result) {
-    //   final dataMap = result.responseData;
-    //   if (null != dataMap && dataMap is Map<String, dynamic>) {
-    //     NewsResponse response = NewsResponse().fromJson(dataMap);
+    //   final response = result.data;
+    //   print("response = $response, runtimeType: ${response.runtimeType}");
+    //   if(null != response && response is NewsResponse) {
+    //     print("response is NewsResponse");
     //     if (response?.data != null) {
     //       _dataArray.addAll(response.data);
     //     }
+    //   } else {
+    //     final dataMap = result.responseData;
+    //     if (null != dataMap && dataMap is Map<String, dynamic>) {
+    //       NewsResponse response = NewsResponse().fromJson(dataMap);
+    //       if (response?.data != null) {
+    //         _dataArray.addAll(response.data);
+    //       }
+    //     }
     //   }
+    //
     //   if (null != complete) {
     //     complete();
     //   }
@@ -112,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _refreshController = RefreshController(initialRefresh: false);
+    Networking.instance.enableAutoJsonConvert(true);
     _onRefresh();
   }
 

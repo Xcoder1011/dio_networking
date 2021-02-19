@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:dio_networking/dio_networking.dart';
-
 import 'json_convert/sk_json_convert.dart';
 import 'netcache/cache_obj.dart';
 
@@ -163,12 +162,14 @@ SKNetDataResult _buildDataResult<T>(Response response, int successCode, {String 
               tempList.add(SKJsonConvert.fromJsonSingle(itemType, itemJson));
             });
             data = tempList;
-          } else {
-            data = SKJsonConvert.fromJsonSingle(dataType, data);
           }
         }
       } else if (null != T && null != data) {
+
         String type = T.toString();
+
+        print("type = $type, runtimeType: ${type.runtimeType}");
+
         // data 为map 类型
         if (data is Map<String, dynamic>) {
           if (List<T>() is List<SKJsonConvert>) {
@@ -188,11 +189,14 @@ SKNetDataResult _buildDataResult<T>(Response response, int successCode, {String 
           } else {
             //  <T> 类型
             if (List<T>() is List<SKJsonConvert>) {
+              print("List<T>() is List<SKJsonConvert>");
               List tempList = List();
               data.forEach((itemJson) {
+                print("itemJson>>>> $itemJson");
                 tempList.add(SKJsonConvert.fromJsonSingle(type, itemJson));
+                print("END>>>>");
               });
-              data = tempList as List<T>;
+              data = tempList;
             }
           }
         }
