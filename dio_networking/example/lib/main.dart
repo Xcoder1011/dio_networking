@@ -40,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _pageIndex = 1;
 
   void _requestData({int pageIndex = 1, VoidCallback complete}) async {
-
     rootBundle.loadString('lib/model/local_json_1.json').then((value) {
       if (mounted) {
         setState(() {
