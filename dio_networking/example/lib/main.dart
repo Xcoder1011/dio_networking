@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio_networking/dio_networking.dart';
 import 'package:example/controller/news_detail.dart';
+import 'package:example/crash_report.dart';
 import 'package:example/model/news_response.dart';
 import 'package:example/view/news_cell.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 void main() {
-  runApp(MyApp());
+  CrashReport.runCrashGuarded(() => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
