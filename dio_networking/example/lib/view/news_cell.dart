@@ -1,26 +1,24 @@
 import 'dart:math';
-
 import 'package:example/model/news_response.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef ClickCallBack<T> = void Function(T value);
 
 class NewsCell extends StatelessWidget {
   final SKDataModel item;
-  final ClickCallBack callback;
+  final ClickCallBack? callback;
 
-  NewsCell(this.item, {this.callback});
+  const NewsCell(this.item, {super.key, this.callback});
 
   void _tapDetail() {
     if (callback != null) {
-      callback(item);
+      callback!(item);
     }
   }
 
   Widget line() {
     return Container(
-      color: Color(0xFFE5E5E5),
+      color: const Color(0xFFE5E5E5),
       height: 0.5,
     );
   }
@@ -28,14 +26,17 @@ class NewsCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: _tapDetail,
       child: Container(
+        height: 111,
+        color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               height: 110,
               color: Colors.white,
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -44,24 +45,22 @@ class NewsCell extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item.title,
-                          style: TextStyle(
+                      Text(item.title ?? '',
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500)),
-                      Text(item.source, style: TextStyle(fontSize: 10)),
+                      Text(item.source ?? '',
+                          style: const TextStyle(fontSize: 10)),
                     ],
                   )),
-                  SizedBox(width: 5),
-                  Image.network(item.imgsrc)
+                  const SizedBox(width: 5),
+                  Image.network(item.imgsrc ?? '')
                 ],
               ),
             ),
             line(),
           ],
         ),
-        height: 111,
-        color: Colors.white,
       ),
-      onTap: _tapDetail,
     );
   }
 }

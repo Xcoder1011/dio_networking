@@ -1,15 +1,12 @@
-
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsDetailWidget extends StatefulWidget {
-
   final String url;
-  String title;
+  String? title;
 
-  NewsDetailWidget({this.url, this.title});
+  NewsDetailWidget({super.key, required this.url, this.title});
 
   @override
   State<StatefulWidget> createState() {
@@ -18,7 +15,7 @@ class NewsDetailWidget extends StatefulWidget {
 }
 
 class _NewsDetailWidget extends State<NewsDetailWidget> {
-  WebViewController _webViewController;
+  WebViewController? _webViewController;
   bool _webViewReady = false;
 
   @override
@@ -31,7 +28,7 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(widget.title ?? ""),
           centerTitle: true,
         ),
         body: SafeArea(
@@ -54,7 +51,7 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
             onPageFinished: (String value) {
               _webViewReady = true;
               _webViewController
-                  .evaluateJavascript('document.title')
+                  ?.evaluateJavascript('document.title')
                   .then((title) {
                 setState(() {
                   widget.title = title;
@@ -66,7 +63,6 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
             },
           ),
         ),
-        
         Container(
           height: 44,
           child: Row(
@@ -77,8 +73,9 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
                 onPressed: !_webViewReady
                     ? null
                     : () async {
-                        if (await _webViewController.canGoBack()) {
-                          await _webViewController.goBack();
+                        if (_webViewController != null &&
+                            (await _webViewController!.canGoBack())) {
+                          await _webViewController?.goBack();
                         }
                       },
               ),
@@ -87,8 +84,9 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
                 onPressed: !_webViewReady
                     ? null
                     : () async {
-                        if (await _webViewController.canGoForward()) {
-                          await _webViewController.goForward();
+                        if (_webViewController != null &&
+                            (await _webViewController!.canGoForward())) {
+                          await _webViewController!.goForward();
                         }
                       },
               ),
@@ -97,7 +95,7 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
                 onPressed: !_webViewReady
                     ? null
                     : () {
-                        _webViewController.reload();
+                        _webViewController?.reload();
                       },
               ),
             ],

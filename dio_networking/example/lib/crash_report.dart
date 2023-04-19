@@ -3,22 +3,16 @@ import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-///
-///  crash_report.dart
-///
-///  Created by wushangkun on 6/23/21.
-///  Copyright (c) 2021 chelun. All rights reserved.
-//
-
 class CrashReport {
-  static const MethodChannel _channel =
-      const MethodChannel('flutter_app_native');
+  static const MethodChannel _channel = MethodChannel('flutter_app_native');
 
-  static runCrashGuarded<R>(R body()) {
+  static runCrashGuarded<R>(R Function() body) {
     // 处理FlutterError.onError回调的异常
     FlutterError.onError = (FlutterErrorDetails details) {
       // 将FlutterError的异常处理中转至runZoned的异常处理handler中, 因为两者的处理方式是一样的, 如果处理方式不一样, 可以分开来处理
-      Zone.current.handleUncaughtError(details.exception, details.stack);
+      if (details.stack != null) {
+        Zone.current.handleUncaughtError(details.exception, details.stack!);
+      }
     };
 
     // 处理Isolate回调的异常, 只针对main isolate或者root isolate生效
@@ -63,7 +57,9 @@ class CrashReport {
           // 异常的堆栈信息
           'stackTrace': details.stack.toString()
         });
-      } catch (e) {}
+      } catch (e) {
+        throw 'Failed to invoke method: reportCrash, error: ${e.toString()}';
+      }
     }
   }
 }

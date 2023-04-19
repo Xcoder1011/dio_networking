@@ -9,10 +9,12 @@ import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 void main() {
-  CrashReport.runCrashGuarded(() => runApp(MyApp()));
+  CrashReport.runCrashGuarded(() => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,13 +23,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'dio_networking'),
+      home: const MyHomePage(title: 'dio_networking'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -35,12 +38,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  RefreshController _refreshController;
-  List<SKDataModel> _dataArray = [];
-  bool _enableLoadMore = true;
+  RefreshController? _refreshController;
+  final List<SKDataModel> _dataArray = [];
+  final bool _enableLoadMore = true;
   int _pageIndex = 1;
 
-  void _requestData({int pageIndex = 1, VoidCallback complete}) async {
+  void _requestData({int pageIndex = 1, VoidCallback? complete}) async {
     rootBundle.loadString('lib/model/local_json_1.json').then((value) {
       if (mounted) {
         setState(() {
@@ -48,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (null != dataMap && dataMap is Map<String, dynamic>) {
             NewsResponse response = NewsResponse().fromJson(dataMap);
             if (response?.data != null) {
-              _dataArray.addAll(response.data);
+              _dataArray.addAll(response?.data as Iterable<SKDataModel>);
             }
           }
           if (null != complete) {
@@ -90,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
         complete: () {
           if (mounted) {
             setState(() {
-              _refreshController.refreshCompleted();
+              _refreshController?.refreshCompleted();
             });
           }
         },
@@ -103,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
         complete: () {
           if (mounted) {
             setState(() {
-              _refreshController.loadComplete();
+              _refreshController?.loadComplete();
             });
           }
         },
@@ -114,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _didSelectItemAt(SKDataModel item) {
     Navigator.push(
         context,
-        new MaterialPageRoute(
+        MaterialPageRoute(
             builder: (context) => NewsDetailWidget(
                 url: "${item.m_url}", title: "${item.title}")));
   }
@@ -130,14 +133,15 @@ class _MyHomePageState extends State<MyHomePage> {
   /// List View
   Widget _newsListWidget() {
     int dataListCount = _dataArray.length;
+    _refreshController ??= RefreshController(initialRefresh: false);
     return Container(
         color: Colors.white,
         child: SmartRefresher(
           enablePullDown: true,
           enablePullUp: _enableLoadMore,
-          controller: _refreshController,
-          header: WaterDropHeader(),
-          footer: ClassicFooter(),
+          controller: _refreshController!,
+          header: const WaterDropHeader(),
+          footer: const ClassicFooter(),
           onRefresh: _onRefresh,
           onLoading: _onLoading,
           child: ListView.builder(
