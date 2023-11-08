@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:dio_networking/dio_networking.dart';
 import 'package:example/controller/news_detail.dart';
@@ -30,11 +31,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
-
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<StatefulWidget> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -61,27 +60,36 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
 
+    // const api = "https://baike.baidu.com/tashuo/api/getrectashuolist?lemmaId=22099728";
+    // Networking.instance.get(api, null, (result) {
+    //   debugPrint("response = $result");
+    // });
+
     // Networking.instance.get<NewsResponse>("https://v1.alapi.cn/api/new/toutiao", null,
     //     (result) {
     //   final response = result.data;
-    //   print("response = $response, runtimeType: ${response.runtimeType}");
-    //   if(null != response && response is NewsResponse) {
-    //     print("response is NewsResponse");
-    //     if (response?.data != null) {
-    //       _dataArray.addAll(response.data);
-    //     }
-    //   } else {
-    //     final dataMap = result.responseData;
-    //     if (null != dataMap && dataMap is Map<String, dynamic>) {
-    //       NewsResponse response = NewsResponse().fromJson(dataMap);
-    //       if (response?.data != null) {
-    //         _dataArray.addAll(response.data);
-    //       }
-    //     }
+    //   if (kDebugMode) {
+    //     print("response = $response, runtimeType: ${response.runtimeType}");
     //   }
-    //
-    //   if (null != complete) {
-    //     complete();
+    //   if (mounted) {
+    //     setState(() {
+    //       if(null != response && response is NewsResponse) {
+    //         if (response.data != null) {
+    //           _dataArray.addAll(response.data as Iterable<SKDataModel>);
+    //         }
+    //       } else {
+    //         final dataMap = result.responseData;
+    //         if (null != dataMap && dataMap is Map<String, dynamic>) {
+    //           NewsResponse response = NewsResponse().fromJson(dataMap);
+    //           if (response.data != null) {
+    //             _dataArray.addAll(response.data as Iterable<SKDataModel>);
+    //           }
+    //         }
+    //       }
+    //       if (null != complete) {
+    //         complete();
+    //       }
+    //     });
     //   }
     // });
   }

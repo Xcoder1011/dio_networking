@@ -42,11 +42,11 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
         Expanded(
           flex: 1,
           child: WebView(
-            initialUrl: widget.url,
+            initialUrl: widget.url ?? "",
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController controller) {
               _webViewController = controller;
-              controller.loadUrl(widget.url);
+              controller.loadUrl(widget.url ?? "");
             },
             onPageFinished: (String value) {
               _webViewReady = true;
@@ -63,7 +63,7 @@ class _NewsDetailWidget extends State<NewsDetailWidget> {
             },
           ),
         ),
-        Container(
+        SizedBox(
           height: 44,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

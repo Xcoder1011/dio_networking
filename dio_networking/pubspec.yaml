@@ -1,16 +1,11 @@
 name: dio_networking
 description: A new Flutter package project.
-version: 0.0.1
+version: 0.0.2
 homepage:
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
   flutter: ">=1.17.0"
-
-# 能运行的老版本
-#environment:
-#  sdk: ">=2.7.0 <3.0.0"
-#  flutter: ">=1.17.0"
 
 dependencies:
   flutter:

@@ -44,8 +44,8 @@ class Networking {
     _baseUrl = url;
   }
 
-  /// 是否json解析  默认true
-  bool _autoJsonConvert = true;
+  /// 是否json解析  默认false
+  bool _autoJsonConvert = false;
 
   bool get autoJsonConvert {
     return _autoJsonConvert;
@@ -57,21 +57,21 @@ class Networking {
   }
 
   /// GET
-  get<T>(String path, Map<String, dynamic> params, RequestCallback finish,
+  get<T>(String path, Map<String, dynamic>? params, RequestCallback finish,
       {bool needCache = false, int successCode = 0, String? baseUrl}) async {
     _realRequest<T>(path, params, finish, 'GET',
         needCache: needCache, successCode: successCode, baseUrl: baseUrl);
   }
 
   /// POST
-  post<T>(String path, Map<String, dynamic> params, RequestCallback finish,
+  post<T>(String path, Map<String, dynamic>? params, RequestCallback finish,
       {bool needCache = false, int successCode = 0, String? baseUrl}) async {
     _realRequest<T>(path, params, finish, 'POST',
         needCache: needCache, successCode: successCode, baseUrl: baseUrl);
   }
 
   /// 统一接口请求, 支持 method
-  request<T>(String path, Map<String, dynamic> params, RequestCallback finish,
+  request<T>(String path, Map<String, dynamic>? params, RequestCallback finish,
       {bool needCache = false,
       int successCode = 0,
       String? baseUrl,
